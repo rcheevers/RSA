@@ -1,31 +1,39 @@
 import random
+import json
+import os
 systemRandom = random.SystemRandom()
 
 def rand():
     return systemRandom.randint(2**127,2**128)
 
-def createKeys():
+def createKeys(name="Master"):
     p = rand()
     q = rand()
     while (not isPrime(p)):
         p = rand()
-    print(p)
     while (not isPrime(q)):
         q = rand()
-    print(q)
     n = p*q
-    print(n)
     PhiN = (p-1)*(q-1)//GCD(p-1,q-1)
-    print(PhiN)
     e = setE(PhiN)
-    print(e)
     d = EEA(e,PhiN)
-    print(d)
-    file = open("RSAKeys.txt","a")
-    file.write(("Private Key: "+str(d)+", "+str(n)+"\n"))
-    file.write(("Public Key: "+str(e)+", "+str(n)+"\n"))
-    file.close()
 
+    newKey = {
+        "d" : d,
+        "n" : n,
+        "e" : e
+    }
+
+    if(os.path.isfile("RSAKeys.json") and os.access("RSAKeys.json", os.R_OK)):
+        with open("RSAKeys.json","w") as file:
+            keyDict = json.load(file)
+            keyDict[name] = newKey
+            json.dump(keyDict, file)
+    else:
+        with open("RSAKeys.json","w") as file:
+            keyDict = {}
+            keyDict[name] = newKey
+            json.dump(keyDict, file)
     
 def isPrime(n):  
     k = 3
@@ -77,28 +85,3 @@ def EEA(a,b):
     if (s0 < 0):
         s0 = s0 + b
     return s0
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
