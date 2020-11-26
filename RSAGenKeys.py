@@ -1,24 +1,21 @@
-import random
+import secrets
 import json
 import os
-systemRandom = random.SystemRandom()
-
-def rand():
-    return systemRandom.randint(2**127,2**128)
+import random
 
 def createKeys(name="Master"):
-    p = rand()
-    q = rand()
+    p = secrets.randbits(2048)
+    q = secrets.randbits(2048)
     while (not isPrime(p)):
-        p = rand()
+        p = secrets.randbits(2048)
     while (not isPrime(q)):
-        q = rand()
+        q = secrets.randbits(2048)
     n = p*q
     PhiN = (p-1)*(q-1)//GCD(p-1,q-1)
     e = setE(PhiN)
     d = EEA(e,PhiN)
 
-    newKey = {
+    newKey = { #add key to json file
         "d" : d,
         "n" : n,
         "e" : e
@@ -35,10 +32,10 @@ def createKeys(name="Master"):
             keyDict[name] = newKey
             json.dump(keyDict, file)
     
-def isPrime(n):  
-    k = 3
+def isPrime(n): #fermats compositeness test
+    k = 128
     while (k>0):
-        a = systemRandom.randint(2,n-2)
+        a = random.randint(2,n-2) 
         if (pow(a,n-1,n) != 1):   
             return False
         k = k-1
@@ -54,17 +51,17 @@ def setE(PhiN):
     return e
 
 
-def goodE(n,PhiN):
-    return (n>1 and n<PhiN and GCD(n,PhiN)==1)
+def goodE(e,PhiN):
+    return (e>1 and e<PhiN and GCD(e,PhiN)==1)
 
-def GCD(a,b):
+def GCD(a,b): #Greatest Common Divisor
     while(b>0):
         temp = a % b
         a = b
         b = temp
     return a
 
-def EEA(a,b):
+def EEA(a,b): #Extended Euclidean Algorithm
     r0 = a
     r1 = b
     t0 = 0
@@ -85,3 +82,4 @@ def EEA(a,b):
     if (s0 < 0):
         s0 = s0 + b
     return s0
+
