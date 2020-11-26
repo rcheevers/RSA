@@ -33,7 +33,7 @@ def signatureVerify(signiture, message, public="Master"):
     N = keyDict[public]["n"]
     keys.close()
     hashM = int(hashlib.sha512(str(message).encode()).hexdigest(),16)
-    return pow(signiture,E,N)==hashM #returns if signature is valid or not
+    return pow(signature,E,N)==hashM #returns if signature is valid or not
 
 def signatureVerify(signiture, ciphertext, public, private):
     keys = open("RSAKeys.json","r") 
@@ -44,7 +44,7 @@ def signatureVerify(signiture, ciphertext, public, private):
     privateN = keyDict[private]["n"]
     keys.close()
     hashM = int(hashlib.sha512(str(pow(cyphertext,privateD,privateN)).encode()).hexdigest(),16)
-    return pow(signiture,publicE,publicN)==hashM #returns if signature is valid or not
+    return pow(signature,publicE,publicN)==hashM #returns if signature is valid or not
 
 #To-Do:
 #write my own pow function
