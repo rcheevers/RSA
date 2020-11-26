@@ -18,10 +18,8 @@ def decrypt(c,name="Master"):
     return pow(c,publicE,publicN) #returns m, the message
 
 #To-Do:
-#add more comments
 #write my own pow function
 #add sign and verify signiture functions
-#use more cryptographically secure random number generator
 #add padding scheme
 #add method to convert messages into numbers automatically
 #protect against some common attacks against badly implimented RSA
