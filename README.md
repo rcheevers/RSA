@@ -1,2 +1,2 @@
 # RSA
-just poorly implementing RSA encryption algorithm
+implementing RSA encryption algorithm
