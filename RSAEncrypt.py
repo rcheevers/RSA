@@ -1,25 +1,55 @@
 import json
+import hashlib
 
-def encrypt(m,name="Master"):
-    
-    file = open("RSAKeys.json","r") #assumes RSAKeys.json exists and has a value of name, else throws an error
-    keyDict = json.load(file)
-    publicD = keyDict[name]["d"]
-    publicN = keyDict[name]["n"]
-    file.close()
-    return pow(m,publicD,publicN) #returns c, the ciphertext
+def encrypt(message, public="Master"): 
+    keys = open("RSAKeys.json","r") #assumes RSAKeys.json exists and has a value of name, else throws an error
+    keyDict = json.load(keys)
+    E = keyDict[public]["e"]
+    N = keyDict[public]["n"]
+    keys.close()
+    return pow(message,E,N) #returns the ciphertext
 
-def decrypt(c,name="Master"):
-    file = open("RSAKeys.json","r") #assumes RSAKeys.json exists and has a value of name, else throws an error
+def decrypt(cyphertext, private="Master"):
+    file = open("RSAKeys.json","r") 
     keyDict = json.load(file)
-    publicE = keyDict[name]["e"]
-    publicN = keyDict[name]["n"]
-    file.close()
-    return pow(c,publicE,publicN) #returns m, the message
+    E = keyDict[private]["d"]
+    N = keyDict[private]["n"]
+    keys.close()
+    return pow(cyphertext,E,N) #returns the message
+
+def sign(message, private="Master"): 
+    keys = open("RSAKeys.json","r") 
+    keyDict = json.load(keys)
+    E = keyDict[private]["d"]
+    N = keyDict[private]["n"]
+    keys.close()
+    hashM = int(hashlib.sha512(str(message).encode()).hexdigest(),16)
+    return pow(hashM,E,N) #returns signature
+
+def signatureVerify(signiture, message, public="Master"):
+    keys = open("RSAKeys.json","r") 
+    keyDict = json.load(keys)
+    E = keyDict[public]["e"]
+    N = keyDict[public]["n"]
+    keys.close()
+    hashM = int(hashlib.sha512(str(message).encode()).hexdigest(),16)
+    return pow(signiture,E,N)==hashM #returns if signature is valid or not
+
+def signatureVerify(signiture, ciphertext, public, private):
+    keys = open("RSAKeys.json","r") 
+    keyDict = json.load(keys)
+    publicE = keyDict[public]["e"]
+    publicN = keyDict[public]["n"]
+    privateD = keyDict[private]["d"]
+    privateN = keyDict[private]["n"]
+    keys.close()
+    hashM = int(hashlib.sha512(str(pow(cyphertext,privateD,privateN)).encode()).hexdigest(),16)
+    return pow(signiture,publicE,publicN)==hashM #returns if signature is valid or not
 
 #To-Do:
 #write my own pow function
-#add sign and verify signiture functions
+    #chinese remainder theorem
+    #square and multiply algorithm
 #add padding scheme
 #add method to convert messages into numbers automatically
 #protect against some common attacks against badly implimented RSA
