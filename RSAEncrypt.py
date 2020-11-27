@@ -47,6 +47,7 @@ def signatureVerify(signiture, ciphertext, public, private):
     return pow(signature,publicE,publicN)==hashM #returns if signature is valid or not
 
 #To-Do:
+#fix json file stuff again
 #write my own pow function
     #chinese remainder theorem
     #square and multiply algorithm
