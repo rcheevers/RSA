@@ -22,7 +22,7 @@ def createKeys(name="Master"):
     }
 
     if(os.path.isfile("RSAKeys.json") and os.access("RSAKeys.json", os.R_OK)):
-        with open("RSAKeys.json","w") as file:
+        with open("RSAKeys.json","a") as file:
             keyDict = json.load(file)
             keyDict[name] = newKey
             json.dump(keyDict, file)
