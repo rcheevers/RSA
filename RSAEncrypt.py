@@ -45,20 +45,3 @@ def signatureVerify(signiture, ciphertext, public, private):
     keys.close()
     hashM = int(hashlib.sha512(str(pow(cyphertext,privateD,privateN)).encode()).hexdigest(),16)
     return pow(signature,publicE,publicN)==hashM #returns if signature is valid or not
-
-#To-Do:
-#fix json file stuff again
-#write my own pow function
-    #chinese remainder theorem
-    #square and multiply algorithm
-#add padding scheme
-#add method to convert messages into numbers automatically
-#protect against some common attacks against badly implimented RSA
-    #Fermat factorization and Wiener's Attack
-    #padding should protect against Coppersmith's Attack
-    #see if i can find any others
-#implement the rest of the signal protocol
-    #Diffie-Hellman
-    #Eliptical curve
-    #Advanced Encryption Standard
-    #Secure Hash Algorithm
