@@ -10,7 +10,7 @@ add method to convert messages into numbers automatically
 protect against some common attacks against badly implimented RSA
     Fermat factorization and Wiener's Attack
     padding should protect against Coppersmith's Attack
-    see if i can find any others
+    see if I can find any others
 implement the rest of the signal protocol
     Diffie-Hellman
     Eliptical curve
